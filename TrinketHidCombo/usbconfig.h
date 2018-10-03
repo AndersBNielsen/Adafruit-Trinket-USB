@@ -28,22 +28,27 @@ License along with TrinketHidCombo. If not, see
 <http://www.gnu.org/licenses/>.
 */
 
-#include "cmdline_defs.h"
+//#include "cmdline_defs.h"
 
 #ifndef __usbconfig_h_included__
 #define __usbconfig_h_included__
 
 /* ---------------------------- Hardware Config ---------------------------- */
 
-#define USB_CFG_IOPORTNAME      B
+#if defined (__AVR_ATtiny44__) || defined (__AVR_ATtiny84__)
+#define USB_CFG_IOPORTNAME      A
+#define USB_CFG_DMINUS_BIT      1
+#define USB_CFG_DPLUS_BIT       0
+#endif
+//#define USB_CFG_IOPORTNAME      B
 /* This is the port where the USB bus is connected. When you configure it to
  * "B", the registers PORTB, PINB and DDRB will be used.
  */
-#define USB_CFG_DMINUS_BIT      3
+//#define USB_CFG_DMINUS_BIT      3
 /* This is the bit number in USB_CFG_IOPORT where the USB D- line is connected.
  * This may be any bit in the port.
  */
-#define USB_CFG_DPLUS_BIT       4
+//#define USB_CFG_DPLUS_BIT       4
 /* This is the bit number in USB_CFG_IOPORT where the USB D+ line is connected.
  * This may be any bit in the port. Please note that D+ must also be connected
  * to interrupt pin INT0! [You can also use other interrupts, see section
@@ -384,6 +389,7 @@ extern void calibrateOscillator(void);
  * which is not fully supported (such as IAR C) or if you use a differnt
  * interrupt than INT0, you may have to define some of these.
  */
+ /*
 #define USB_INTR_CFG            PCMSK
 #define USB_INTR_CFG_SET        (1 << USB_CFG_DPLUS_BIT)
 #define USB_INTR_CFG_CLR        0
@@ -392,5 +398,16 @@ extern void calibrateOscillator(void);
 #define USB_INTR_PENDING        GIFR
 #define USB_INTR_PENDING_BIT    PCIF
 #define USB_INTR_VECTOR         PCINT0_vect
+*/
+
+/* Use PCINT0 instead of INT0 */
+#define USB_INTR_CFG PCMSK0
+#define USB_INTR_CFG_SET (1 << PCINT0)
+#define USB_INTR_CFG_CLR 0
+#define USB_INTR_ENABLE GIMSK
+#define USB_INTR_ENABLE_BIT PCIE0
+#define USB_INTR_PENDING GIFR
+#define USB_INTR_PENDING_BIT PCIF0
+#define USB_INTR_VECTOR PCINT0_vect
 
 #endif /* __usbconfig_h_included__ */
