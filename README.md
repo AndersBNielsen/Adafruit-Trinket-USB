@@ -1,6 +1,6 @@
 # Adafruit-Trinket-USB
 
-This is a fork to add support for ATTiny44 / ATTiny84 with a 16Mhz crystal
+This is a fork to add support for ATTiny44 / ATTiny84 with a 16Mhz crystal (Only TrinketHIDCombo)
 
 Arduino libraries allowing Trinket to act as USB devices
 
